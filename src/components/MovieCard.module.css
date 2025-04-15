@@ -1,0 +1,59 @@
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--color-bg);
+    cursor: pointer;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  .poster {
+    width: 100%;
+    height: 256px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+  }
+  
+  .description {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+  
+  .genre {
+    color: var(--color-gray);
+    font-size: 0.875rem;
+    margin-top: 4px;
+  }
+  
+  .datetime {
+    color: var(--color-primary);
+    font-size: 0.875rem;
+    margin-top: 4px;
+  }
+  
+  /* Адаптивність */
+  @media (min-width: 640px) {
+    .card {
+      padding: 20px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .poster {
+      height: 300px;
+    }
+  }
+  

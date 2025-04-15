@@ -1,0 +1,27 @@
+.searchInput {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #b24444;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-family: var(--font-base);
+  }
+  
+  .movieGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  @media (min-width: 640px) {
+    .movieGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .movieGrid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  

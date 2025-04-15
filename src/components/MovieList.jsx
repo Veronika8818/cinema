@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MovieCard from "./MovieCard";
+import styles from './MovieList.module.css';
 
 const MovieList = ({ movies }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,22 +11,20 @@ const MovieList = ({ movies }) => {
 
   return (
     <div>
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Пошук фільму за назвою..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded"
-        />
-      </div>
+    <input
+      className={styles.searchInput}
+      type="text"
+      placeholder="Пошук фільму за назвою..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {filteredMovies.map(movie => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
-      </div>
+    <div className={styles.movieGrid}>
+      {filteredMovies.map(movie => (
+        <MovieCard key={movie.id} movie={movie} />
+      ))}
     </div>
+  </div>
   );
 };
 
