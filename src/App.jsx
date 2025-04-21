@@ -1,16 +1,14 @@
 import React from 'react';
-import { movies } from "./data/movies"; 
-import MovieList from "./components/MovieList";
-import './index.css'; 
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home.jsx';
+import Booking from './pages/Booking.jsx';
 
 function App() {
   return (
-    <div className="app"> 
-    <h1>Тестовий заголовок</h1>
-
-      <h1 className="main-heading">Список фільмів</h1>
-      <MovieList movies={movies} />
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/booking/:id" element={<Booking />} />
+    </Routes>
   );
 }
 

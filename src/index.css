@@ -1,8 +1,8 @@
 :root {
   --color-primary: #3b82f6;
   --color-gray: #6b7280;
-  --color-bg: #f00b0b96; /* Темніший колір */
-  --color-text: #2f0c0cd7; /* Світліший колір */
+  --color-bg: #f00b0b96; 
+  --color-text: #2f0c0cd7; 
   --font-base: 'Segoe UI', sans-serif;
 }
 
