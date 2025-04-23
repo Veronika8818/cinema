@@ -1,38 +1,123 @@
 .hall {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 16px;
-  }
-  
-  .row {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 8px;
-  }
-  
-  .seat {
-    width: 30px;
-    height: 30px;
-    background-color: green;
-    cursor: pointer;
-    margin: 5px;
-  }
-  
-  .seat.selected {
-    background-color: #0062b2; 
-  }
-  
-  .selectedInfo {
-    margin-top: 16px;
-    font-size: 1rem;
-  }
-  
-  @media (max-width: 600px) {
-    .seat {
-      width: 28px;
-      height: 28px;
-      font-size: 0.75rem;
-    }
-  }
-  
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+}
+
+.seat {
+  width: 50px;
+  height: 50px;
+  background-color: green;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.available {
+  background-color: green;
+}
+
+.selected {
+  background-color: orange;
+}
+
+.booked {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.selectedInfo {
+  margin-top: 15px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.bookingButton {
+  margin-top: 16px;
+  padding: 12px 20px;
+  font-weight: bold;
+  background-color: #8B0000;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s;
+  width: 100%;
+  max-width: 300px;
+  align-self: center;
+}
+
+.bookingButton:hover {
+  background-color: #a80000;
+}
+
+.form {
+  margin-top: 30px;
+  display: none; /* сховати форму за замовчуванням */
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  align-items: center;
+}
+
+.form.show {
+  display: flex;
+}
+
+input {
+  padding: 10px;
+  font-size: 1rem;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.form button {
+  background-color: #800000;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.form button:hover {
+  background-color: #5c0000;
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  background: radial-gradient(circle, var(--color-bg) 20%, var(--color-text) 100%);
+  padding: 2rem;
+  text-align: center;
+}

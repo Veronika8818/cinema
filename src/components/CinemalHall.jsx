@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styles from './CinemalHall.module.css';
+import { saveBooking, getBookedSeats } from '../BookingService';
 import { useParams } from 'react-router-dom';
 
 
 const rows = 5;
 const cols = 8;
+
 
 const CinemaHall = () => {
   const { id } = useParams();
@@ -12,18 +14,26 @@ const CinemaHall = () => {
   const [bookedSeats, setBookedSeats] = useState([]);
   const [formData, setFormData] = useState({ name: '', phone: '', email: '' });
   const [showForm, setShowForm] = useState(false);
+  const [errors, setErrors] = useState({});
   
 
 
   useEffect(() => {
-    const data = localStorage.getItem('bookings');
-    if (data) {
-      const parsed = JSON.parse(data);
-      if (parsed[id]) {
-        setBookedSeats(parsed[id]);
-      }
-    }
+    setBookedSeats(getBookedSeats(id));
   }, [id]);
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = 'Імʼя обовʼязкове';
+    if (!formData.phone.trim()) newErrors.phone = 'Телефон обовʼязковий';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email обовʼязковий';
+    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(formData.email)) {
+      newErrors.email = 'Email невалідний';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSeatClick = (row, col) => {
     const seatId = `${row}-${col}`;
@@ -47,33 +57,34 @@ const CinemaHall = () => {
     setShowForm(true);
   };
 
- const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const data = localStorage.getItem('bookings');
-    const parsed = data ? JSON.parse(data) : {};
-
-    const updatedSeats = [...(parsed[id] || []), ...selectedSeats];
-    parsed[id] = Array.from(new Set(updatedSeats));
-
-    localStorage.setItem('bookings', JSON.stringify(parsed));
-    setBookedSeats(parsed[id]);
+    if (!validate()) return;
+  
+    saveBooking(id, selectedSeats, formData);
+  
+    const updatedSeats = [...bookedSeats, ...selectedSeats];
+    setBookedSeats(Array.from(new Set(updatedSeats)));
     setSelectedSeats([]);
     setFormData({ name: '', phone: '', email: '' });
+    setErrors({});
     setShowForm(false);
     alert('Бронювання успішне!');
   };
+  
 
-  return (
-    <div>
-      <div className={styles.hall}>
-        {[...Array(rows)].map((_, row) => (
-          <div key={row} className={styles.row}>
-            {[...Array(cols)].map((_, col) => {
-              const seatId = `${row}-${col}`;
-              const isSelected = selectedSeats.includes(seatId);
-              const isBooked = bookedSeats.includes(seatId);
-              return (
-                <div
+  
+return (
+  <div className={styles.container}>
+    <div className={styles.hall}>
+      {[...Array(rows)].map((_, row) => (
+        <div key={row} className={styles.row}>
+          {[...Array(cols)].map((_, col) => {
+            const seatId = `${row}-${col}`;
+            const isSelected = selectedSeats.includes(seatId);
+            const isBooked = bookedSeats.includes(seatId);
+            return (
+              <div
                 key={seatId}
                 className={`${styles.seat} ${
                   isBooked
@@ -85,32 +96,59 @@ const CinemaHall = () => {
                 onClick={() => handleSeatClick(row, col)}
               >
                 {col + 1}
-                </div>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-
-      <div className={styles.selectedInfo}>
-        <strong>Вибрані місця:</strong> {selectedSeats.join(', ') || 'немає'}
-      </div>
-
-      <button onClick={handleBooking} disabled={selectedSeats.length === 0} className={styles.bookingButton}>
-        Забронювати
-      </button>
-
-      {showForm && (
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <h3>Підтвердження бронювання</h3>
-          <input type="text" placeholder="Імʼя" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
-          <input type="tel" placeholder="Телефон" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
-          <input type="email" placeholder="Email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-          <button type="submit">Підтвердити</button>
-        </form>
-      )}
+              </div>
+            );
+          })}
+        </div>
+      ))}
     </div>
-  );
+
+    <div className={styles.selectedInfo}>
+      <strong>Вибрані місця:</strong> {selectedSeats.join(', ') || 'немає'}
+    </div>
+
+    <button
+      onClick={handleBooking}
+      disabled={selectedSeats.length === 0}
+      className={styles.bookingButton}
+    >
+      Забронювати
+    </button>
+
+    {showForm && (
+      <form onSubmit={handleSubmit} className={`${styles.form} ${showForm ? styles.show : ''}`}>
+      <h3>Підтвердження бронювання</h3>
+
+        <input
+          type="text"
+          placeholder="Імʼя"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        />
+        {errors.name && <span className={styles.error}>{errors.name}</span>}
+
+        <input
+          type="tel"
+          placeholder="Телефон"
+          value={formData.phone}
+          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+        />
+        {errors.phone && <span className={styles.error}>{errors.phone}</span>}
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        />
+        {errors.email && <span className={styles.error}>{errors.email}</span>}
+
+        <button type="submit">Підтвердити</button>
+      </form>
+    )}
+  </div>
+);
+
 };
 
 
