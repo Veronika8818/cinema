@@ -12,14 +12,11 @@
   }
   
   .seat {
-    background-color: #008004; 
-    width: 32px;
-    height: 32px;
-    text-align: center;
-    line-height: 32px;
-    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    background-color: green;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    margin: 5px;
   }
   
   .seat.selected {
